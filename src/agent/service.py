@@ -48,17 +48,20 @@ def overview_stats(
 ) -> dict:
     """Headline analytics for the Dashboard, optionally scoped to a date range.
 
-    `transcripts_ok`/`transcripts_failed` are whole-library ingestion counts (from
-    the manifest); the insight-derived figures respect `date_from`/`date_to`.
+    `transcripts_ok` is the number of distinct transcripts represented in the
+    insights DB (respecting `date_from`/`date_to`), so it's always consistent with
+    the insights shown and does not depend on manifest.json existing.
+    `transcripts_failed` is a best-effort count from the manifest (extraction
+    failures aren't stored in the DB); it reads 0 when the manifest is absent.
     """
     config = config or load_config()
     manifest = Manifest.load(config.manifest_path)
-    processed = manifest.processed.values()
-    n_ok = sum(1 for e in processed if e.get("status") == "ok")
-    n_failed = sum(1 for e in processed if e.get("status") == "failed")
+    n_failed = sum(1 for e in manifest.processed.values() if e.get("status") == "failed")
 
     with Store(config.database_path) as store:
         df = aggregate.load_insights_df(store, date_from=date_from, date_to=date_to)
+
+    transcripts_ok = int(df["call_id"].nunique()) if not df.empty else 0
 
     date_range = None
     if not df.empty:
@@ -67,7 +70,7 @@ def overview_stats(
             date_range = (dates.min().date().isoformat(), dates.max().date().isoformat())
 
     return {
-        "transcripts_ok": n_ok,
+        "transcripts_ok": transcripts_ok,
         "transcripts_failed": n_failed,
         "total_insights": int(len(df)),
         "n_personas": int(df["persona"].nunique()) if not df.empty else 0,
