@@ -46,16 +46,23 @@ def _resolve(path_str: str) -> Path:
 def load_config(config_path: Path | str | None = None) -> Config:
     """Read config.yaml and return a validated Config.
 
-    Raises a clear error if the file is missing (points the user at the template).
+    When no explicit path is given and config.yaml is absent, fall back to the
+    committed config.example.yaml — config.yaml is git-ignored, so deployed hosts
+    (e.g. Streamlit Community Cloud) only have the example, and its defaults work
+    out of the box. Raises a clear error only if neither file exists.
     """
     path = Path(config_path) if config_path else DEFAULT_CONFIG_PATH
     if not path.exists():
-        raise FileNotFoundError(
-            f"Config file not found at {path}.\n"
-            "Create it by copying the template:\n"
-            "    cp config.example.yaml config.yaml\n"
-            "then edit the paths for your machine."
-        )
+        example = PROJECT_ROOT / "config.example.yaml"
+        if config_path is None and example.exists():
+            path = example
+        else:
+            raise FileNotFoundError(
+                f"Config file not found at {path}.\n"
+                "Create it by copying the template:\n"
+                "    cp config.example.yaml config.yaml\n"
+                "then edit the paths for your machine."
+            )
 
     with open(path, "r", encoding="utf-8") as f:
         raw = yaml.safe_load(f) or {}

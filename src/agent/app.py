@@ -1,15 +1,24 @@
 """Customer Feedback Insights — Streamlit UI.
 
-Three tabs: Insights (analytics + needs matrix + top priorities), Query (ask one
-question over the extracted insights), and Upload New Transcript (add a file and
-ingest it).
+Four tabs: Dashboard (metrics + charts + needs matrix, date-filterable), Insights
+(weekly priorities + insights table), Query (ask one question over the extracted
+insights), and Upload New Transcript (add a file and ingest it).
 
 Run it:
     export ANTHROPIC_API_KEY="sk-ant-..."
     PYTHONPATH=src venv/bin/streamlit run src/agent/app.py
+
+Deployed hosts (e.g. Streamlit Community Cloud) run this file directly as the main
+script, which puts src/agent/ — not src/ — on the import path. The sys.path shim
+below adds src/ so `import agent...` resolves without PYTHONPATH being set.
 """
 
 from __future__ import annotations
+
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from datetime import date
 
