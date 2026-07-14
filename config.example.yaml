@@ -1,0 +1,38 @@
+# Customer Feedback Insights — configuration template.
+#
+# Copy this file to `config.yaml` and edit the values for your machine.
+#   cp config.example.yaml config.yaml
+#
+# `config.yaml` is git-ignored so your local paths stay off version control.
+#
+# The Anthropic API key is NOT stored here. Get a key at
+# https://console.anthropic.com/settings/keys and set it as an environment
+# variable before running the pipeline:
+#   export ANTHROPIC_API_KEY="..."
+
+# Where transcripts are read from. This is the synced folder of Gemini meeting
+# notes / transcripts (.docx). Point it at your synced Google Drive folder in
+# production.
+transcripts_dir: "data"
+
+# Which file extensions in that folder count as transcripts.
+#   .docx        Word / Google-Docs export ("Notes by Gemini", "Transcript")
+#   .txt, .md    plain text
+transcript_extensions: [".docx", ".txt", ".md"]
+
+# Working data files (created automatically). Kept under output/ (git-ignored),
+# separate from data/ which holds the source transcripts.
+database_path: "output/insights.db"
+manifest_path: "output/manifest.json"
+
+# --- Anthropic (Claude) API settings ---
+# Model used for insight extraction. `claude-haiku-4-5` is Anthropic's cheapest
+# model ($1/$5 per 1M input/output tokens), fast, 200K context — plenty for one
+# transcript, and it supports the structured-output parsing this pipeline relies on.
+# Alternatives (more capable, more expensive): `claude-sonnet-5`, `claude-opus-4-8`.
+# Run `python -m agent.list_models` to see everything your key can access.
+extraction_model: "claude-haiku-4-5"
+
+# Max output tokens per extraction call. One transcript can yield many insights;
+# 16000 leaves generous headroom. Raise if you see truncated extractions.
+extraction_max_tokens: 16000

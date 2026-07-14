@@ -1,0 +1,24 @@
+# Customer Feedback Insights — Python dependencies
+# Install with:  venv/bin/pip install -r requirements.txt
+
+# Stage 1 (ingestion) + Stage 4 (priority agent) — Anthropic Claude API
+anthropic>=0.69
+
+# Config files
+PyYAML>=6.0
+
+# Reading .docx transcripts (Gemini meeting notes / Google-Docs exports)
+python-docx>=1.1
+
+# Stage 3 (aggregation) — deterministic pivot, no LLM
+pandas>=2.0
+
+# UI — Insights / Upload / Query tabs
+streamlit>=1.30
+
+# --- Added in later stages (left here so the file is the single source of truth) ---
+# Stage 2/5 (Google Sheet mirror):
+#   gspread>=6.0
+#   google-auth>=2.0
+# Stage 5 (email): uses the Python standard library (smtplib) by default — no dep needed.
+#   If we switch to an email API (e.g. SendGrid), add its SDK here.

@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/bin/python --version)",
+      "Bash(venv/bin/pip freeze *)",
+      "Skill(claude-api)",
+      "Bash(venv/bin/pip install *)",
+      "Bash(PYTHONPATH=src venv/bin/python -m paxel.ingest --list)",
+      "Bash(venv/bin/python -c ' *)",
+      "Bash(PYTHONPATH=src venv/bin/python -c ' *)",
+      "Bash(PYTHONPATH=src venv/bin/python -c 'from paxel.config import require_api_key *)",
+      "Bash(venv/bin/python -m py_compile src/paxel/*.py)",
+      "Bash(./venv/bin/python --version)",
+      "Bash(./venv/bin/pip list *)",
+      "Bash(./venv/bin/python -c \"import anthropic; print\\('anthropic', anthropic.__version__\\); print\\('has parse:', hasattr\\(anthropic.Anthropic\\(api_key='x'\\).messages, 'parse'\\)\\)\")",
+      "Bash(./venv/bin/python -c ' *)",
+      "Bash(./venv/bin/python -m py_compile src/paxel/*.py)",
+      "Bash(PYTHONPATH=src ./venv/bin/python -c ' *)",
+      "Bash(PYTHONPATH=src ./venv/bin/python -c \"import paxel.app, paxel.ingest, paxel.show, paxel.service, paxel.extract, paxel.pipeline, paxel.list_models, paxel.config; print\\('all modules import OK'\\)\")",
+      "Bash(PYTHONPATH=src venv/bin/python -c \"from paxel import service\")",
+      "Bash(venv/bin/python src/paxel/app.py)",
+      "Bash(PYTHONPATH=src venv/bin/python -c \"import paxel.app\")",
+      "Bash(grep -viE \"ScriptRunContext|bare mode|use_container_width|will be removed|width=|Session state|streamlit run|^\\\\s*$|^\\\\s*\\\\[|^\\\\s*streamlit run|^\\\\s*run it\")",
+      "Bash(git mv *)",
+      "Bash(git rm *)",
+      "Bash(venv/bin/python -m py_compile src/agent/*.py)",
+      "Bash(PYTHONPATH=src venv/bin/python -c \"import agent, agent.app, agent.service, agent.extract, agent.pipeline, agent.config, agent.list_models, agent.ingest, agent.show, agent.aggregate, agent.schema, agent.store, agent.loader, agent.manifest\")",
+      "Bash(grep -viE \"ScriptRunContext|bare mode|use_container_width|will be removed|width=|Session state|streamlit run|^\\\\s*$|^\\\\s*\\\\[|run it\")",
+      "Bash(PYTHONPATH=src venv/bin/python -c \"import agent.ingest; print\\('agent.ingest importable'\\)\")"
+    ]
+  }
+}

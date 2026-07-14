@@ -1,0 +1,20 @@
+# Local config (contains paths) — never commit
+config.yaml
+
+# Secrets
+.env
+
+# Confidential customer data — NEVER commit (source transcripts + derived DB).
+data/
+output/
+*.zip
+
+# Python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS / Office temp files
+.DS_Store
+~$*
